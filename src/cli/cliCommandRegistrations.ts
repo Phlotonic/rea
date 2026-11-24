@@ -165,6 +165,11 @@ export const CLI_COMMAND_REGISTRATIONS = {
     (module, context) =>
       module.registerNugetNupkgCommands(context.cli, context.logger),
   ),
+  npmPackage: plain(
+    () => import("./npmPackageCommands.js"),
+    (module, context) =>
+      module.registerNpmPackageCommands(context.cli, context.logger),
+  ),
   erlang: plain(
     () => import("./erlangCommands.js"),
     (module, context) =>
@@ -481,6 +486,7 @@ const CLI_FAMILY_REGISTRATIONS: {
     "rust",
     "pythonPyc",
     "nugetNupkg",
+    "npmPackage",
     "erlang",
     "v8CodeCache",
     "mavenGradleMetadata",

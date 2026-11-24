@@ -96,6 +96,7 @@ The [REA website](https://rea.tools/) has worked examples and product pages.
 
 - [Managed-code analysis](guides/managed/managed-code-analysis.md)
 - [NuGet packages](guides/managed/nuget-nupkg.md)
+- [npm packages](npm-package.md)
 - [.NET single-file bundles](dotnet-bundles.md)
 - [IL2CPP metadata](il2cpp-metadata.md)
 

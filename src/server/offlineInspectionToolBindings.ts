@@ -29,6 +29,7 @@ import { retainAnalysisResultSources } from "../application/investigation/record
 import type { MavenGradleMetadataService } from "../application/java/MavenGradleMetadataService.js";
 import type { ModelArtifactService } from "../application/model/ModelArtifactService.js";
 import type { NugetNupkgService } from "../application/nuget/NugetNupkgService.js";
+import type { NpmPackageService } from "../application/javascript/NpmPackageService.js";
 import type { PythonPycService } from "../application/python/PythonPycService.js";
 import type { ReleaseExposureService } from "../application/releaseExposure/ReleaseExposureService.js";
 import type { RustBinaryService } from "../application/rust/RustBinaryService.js";
@@ -205,6 +206,12 @@ export const OFFLINE_INSPECTION_TOOL_BINDINGS = {
       run: (input, options) => service.inspect(input, options),
     },
   })) satisfies Bind<NugetNupkgService>,
+  npmPackage: ((service) => ({
+    inspect_npm_package: {
+      admission: "application",
+      run: (input, options) => service.inspect(input, options),
+    },
+  })) satisfies Bind<NpmPackageService>,
   pythonPyc: ((service) => ({
     inspect_python_pyc: {
       admission: "application",

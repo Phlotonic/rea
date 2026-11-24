@@ -1636,6 +1636,20 @@ export const PROVIDER_LIFECYCLE_COVERAGE: Readonly<
       ),
     ),
   ),
+  "rea-npm-package": inProcess(
+    covered(
+      test(
+        "tests/acceptance/npmPackageCli.test.ts",
+        "inspects npm .tgz tarballs through public CLI without running npm or lifecycle scripts",
+      ),
+    ),
+    covered(
+      test(
+        "src/javascript/npm/NpmPackageParser.test.ts",
+        "runs end-to-end through NpmPackageService and summary analysisView",
+      ),
+    ),
+  ),
   "rea-python-pyc": inProcess(
     covered(
       test(

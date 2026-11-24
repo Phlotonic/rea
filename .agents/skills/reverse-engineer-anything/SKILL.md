@@ -261,10 +261,12 @@ explicit path or endpoint and do not need it.
     result ([kernel modules](https://github.com/morluto/rea/blob/main/docs/kernel-modules.md),
     [kernel build config](https://github.com/morluto/rea/blob/main/docs/guides/native/kernel-build-config.md)).
   - CPython `.pyc`: `inspect_python_pyc`; Erlang `.beam`:
-    `inspect_erlang_beam`; NuGet `.nupkg`: `inspect_nuget_nupkg`
+    `inspect_erlang_beam`; NuGet `.nupkg`: `inspect_nuget_nupkg`; npm `.tgz`:
+    `inspect_npm_package`
     ([pyc](https://github.com/morluto/rea/blob/main/docs/python-pyc.md),
     [BEAM](https://github.com/morluto/rea/blob/main/docs/erlang-beam.md),
-    [NuGet](https://github.com/morluto/rea/blob/main/docs/guides/managed/nuget-nupkg.md)).
+    [NuGet](https://github.com/morluto/rea/blob/main/docs/guides/managed/nuget-nupkg.md),
+    [npm](https://github.com/morluto/rea/blob/main/docs/npm-package.md)).
   - SQLite snapshot: `inspect_sqlite_database`; read the schema first and
     supply a quiescent snapshot rather than a live database/WAL pair
     ([SQLite guide](https://github.com/morluto/rea/blob/main/docs/guides/data/sqlite-databases.md)).
