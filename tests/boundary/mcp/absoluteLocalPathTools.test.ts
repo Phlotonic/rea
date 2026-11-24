@@ -12,6 +12,7 @@ import { API_CONTRACT_TOOL_CONTRACTS } from "../../../src/contracts/apiContractT
 import { PLAYWRIGHT_TRACE_TOOL_CONTRACTS } from "../../../src/contracts/playwrightTraceToolContracts.js";
 import { PYTHON_PYC_TOOL_CONTRACTS } from "../../../src/contracts/python/pythonPycToolContracts.js";
 import { NUGET_NUPKG_TOOL_CONTRACTS } from "../../../src/contracts/nuget/nupkgToolContracts.js";
+import { TYPESCRIPT_DECLARATIONS_TOOL_CONTRACTS } from "../../../src/contracts/javascript/typescriptDeclarationsToolContracts.js";
 import { RequestTrackingMcpServer } from "../../../src/server/RequestTrackingMcpServer.js";
 import { toolRegistrationOptions } from "../../../src/server/toolRegistrationOptions.js";
 import { createMcpSchemaValidation } from "../../fixtures/mcpSchemaValidation.js";
@@ -24,6 +25,7 @@ const CONTRACTS = [
   ...PLAYWRIGHT_TRACE_TOOL_CONTRACTS,
   ...PYTHON_PYC_TOOL_CONTRACTS,
   ...NUGET_NUPKG_TOOL_CONTRACTS,
+  ...TYPESCRIPT_DECLARATIONS_TOOL_CONTRACTS,
   ...V8_CODE_CACHE_TOOL_CONTRACTS,
   ...MAVEN_GRADLE_METADATA_TOOL_CONTRACTS,
 ];
@@ -40,6 +42,7 @@ const PATH_FIELDS = {
   inspect_playwright_trace: ["path"],
   inspect_python_pyc: ["path"],
   inspect_nuget_nupkg: ["path"],
+  inspect_typescript_declarations: ["path", "declaration_map_path"],
   inspect_v8_code_cache: ["path"],
   inspect_maven_gradle_metadata: ["path"],
   export_web_scripts: ["capture_path", "output_directory"],
@@ -148,6 +151,8 @@ it("rejects one relative path field at a time on tools/list", async () => {
     "inspect_playwright_trace.path",
     "inspect_python_pyc.path",
     "inspect_nuget_nupkg.path",
+    "inspect_typescript_declarations.path",
+    "inspect_typescript_declarations.declaration_map_path",
     "inspect_v8_code_cache.path",
     "inspect_maven_gradle_metadata.path",
     "export_web_scripts.capture_path",

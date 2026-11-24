@@ -35,6 +35,10 @@ import {
 import { selectPackageSubpathPattern } from "../../domain/javascript/javascriptPackageSubpathPatterns.js";
 import type { JavaScriptModuleResolutionMode } from "../../domain/javascript/javascriptModuleResolutionMode.js";
 import type { JsonValue } from "../../domain/jsonValue.js";
+import {
+  expandTsconfigAliasCandidates,
+  findEnclosingTsconfig,
+} from "../../domain/javascript/tsconfigPathAliases.js";
 import { err, ok, type Result } from "../../domain/result.js";
 import { isRecord } from "../../kernel/isRecord.js";
 
@@ -864,14 +868,59 @@ const urlRelativeCandidate = (
 ): string | CandidateResolution =>
   urlPathCandidate(applyUrlReference(urlDirectoryState(directory), reference));
 
+const TSCONFIG_PROBE_EXTENSIONS = [
+  ".ts",
+  ".tsx",
+  ".mts",
+  ".cts",
+  ".d.ts",
+  ".d.mts",
+  ".d.cts",
+  ".js",
+  ".jsx",
+  ".mjs",
+  ".cjs",
+  ".json",
+] as const;
+
+const resolveTsconfigAliasCandidate = (
+  input: ResolveArtifactPathInput,
+): CandidateResolution | null => {
+  if (isBuiltin(input.declaredPath)) return null;
+  const tsconfig = findEnclosingTsconfig(input.sourcePath, input.files);
+  if (tsconfig === null) return null;
+  const expanded = expandTsconfigAliasCandidates(input.declaredPath, tsconfig);
+  for (const base of expanded) {
+    const probes: string[] = [base];
+    for (const ext of TSCONFIG_PROBE_EXTENSIONS) probes.push(`${base}${ext}`);
+    for (const ext of TSCONFIG_PROBE_EXTENSIONS)
+      probes.push(`${base}/index${ext}`);
+    for (const probe of probes) {
+      if (input.files.has(probe)) {
+        return {
+          status: "resolved",
+          resolvedPath: probe,
+          limitations: [
+            `Resolved via ${tsconfig.configPath} compilerOptions.paths/baseUrl; runtime resolution depends on the build or loader.`,
+          ],
+        };
+      }
+    }
+  }
+  return null;
+};
+
 const bareModuleCandidate = (
   input: ResolveArtifactPathInput,
 ): CandidateResolution => {
   const request = parseBarePackageRequest(input.declaredPath, input.moduleKind);
-  if (request === null || isBuiltin(input.declaredPath))
+  if (request === null || isBuiltin(input.declaredPath)) {
+    const tsconfigResolved = resolveTsconfigAliasCandidate(input);
+    if (tsconfigResolved !== null) return tsconfigResolved;
     return unresolvedCandidate("external", [
       "The bare specifier is a Node builtin or invalid package name.",
     ]);
+  }
   if (
     input.moduleKind === "import" &&
     (request.packageName.startsWith(".") || request.packageName.includes("%"))
@@ -937,6 +986,8 @@ const bareModuleCandidate = (
         ? {}
         : { unexaminedModuleImports: true as const }),
     };
+  const tsconfigFallback = resolveTsconfigAliasCandidate(input);
+  if (tsconfigFallback !== null) return tsconfigFallback;
   return {
     ...unresolvedCandidate("external", [
       "No matching bare package was inventoried in an enclosing node_modules directory.",

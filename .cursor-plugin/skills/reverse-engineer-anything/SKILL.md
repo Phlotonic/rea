@@ -78,10 +78,14 @@ active-target native or archive workflows; target-free tools take their own
 explicit path or endpoint and do not need it.
 
 - ASAR or extracted JavaScript/Electron tree:
-  `analyze_javascript_application`. To find a few files in a packaged
+  `analyze_javascript_application` (resolves enclosing `tsconfig.json`
+  `paths`/`baseUrl` aliases automatically). To find a few files in a packaged
   `app.asar`, open it with `open_binary`, start with `inspect_artifact`
   using `detail: "summary"`, then analyze the selected files with
-  `source_paths`. When you intend to retain digest contradictions from
+  `source_paths`. For shipped TypeScript declaration files (`.d.ts`/`.d.mts`/`.d.cts`
+  and `.d.ts.map`), call `inspect_typescript_declarations`
+  ([TypeScript declarations guide](https://github.com/morluto/rea/blob/main/docs/typescript-declarations.md)).
+  When you intend to retain digest contradictions from
   re-signed unpacked companions, pass `integrity_policy: "record-and-continue"`
   starting with `inspect_artifact`. See the
   [JavaScript applications reference](references/javascript-applications.md).

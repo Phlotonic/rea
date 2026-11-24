@@ -1636,6 +1636,20 @@ export const PROVIDER_LIFECYCLE_COVERAGE: Readonly<
       ),
     ),
   ),
+  "rea-typescript-declarations": inProcess(
+    covered(
+      test(
+        "tests/acceptance/typescriptDeclarationsCli.test.ts",
+        "inspects TypeScript .d.ts declarations through public CLI without invoking tsc",
+      ),
+    ),
+    covered(
+      test(
+        "src/javascript/typescript/TypeScriptDeclarationsParser.test.ts",
+        "runs end-to-end through TypeScriptDeclarationsService and summary view",
+      ),
+    ),
+  ),
   "rea-python-pyc": inProcess(
     covered(
       test(

@@ -101,6 +101,7 @@ import { OBJDUMP_PROVIDER_IDENTITY } from "../objdump/ObjdumpProviderIdentity.js
 import { PCAP_PROVIDER_IDENTITY } from "../pcap/PcapProviderIdentity.js";
 import { NUGET_NUPKG_PROVIDER_IDENTITY } from "../nuget/NugetNupkgProviderIdentity.js";
 import { PYTHON_PYC_PROVIDER_IDENTITY } from "../python/PythonPycProviderIdentity.js";
+import { TYPESCRIPT_DECLARATIONS_PROVIDER_IDENTITY } from "../javascript/typescript/TypeScriptDeclarationsProviderIdentity.js";
 import { RIZIN_DEBUGGER_PROVIDER_IDENTITY } from "../rizin/RizinDebuggerProviderIdentity.js";
 import { RIZIN_PROVIDER_IDENTITY } from "../rizin/RizinProviderIdentity.js";
 import { RUST_BINARY_PROVIDER_IDENTITY } from "../rust/RustBinaryProviderIdentity.js";
@@ -510,6 +511,13 @@ export const CAPABILITY_DECLARATIONS = {
     providers: [
       providerBinding(NUGET_NUPKG_PROVIDER_IDENTITY, {
         group: "NUGET_NUPKG_TOOL_CONTRACTS",
+      }),
+    ],
+  },
+  typescriptDeclarations: {
+    providers: [
+      providerBinding(TYPESCRIPT_DECLARATIONS_PROVIDER_IDENTITY, {
+        group: "TYPESCRIPT_DECLARATIONS_TOOL_CONTRACTS",
       }),
     ],
   },

@@ -65,6 +65,7 @@ The [REA website](https://rea.tools/) has worked examples and product pages.
 - [Bun standalone executables](bun-standalone.md)
 - [Deno compile executables](deno-standalone.md)
 - [Node.js single executable applications](node-sea.md)
+- [TypeScript declarations and tsconfig path aliases](typescript-declarations.md)
 
 ## Browser and captured websites
 
