@@ -273,6 +273,7 @@ import { nativeObservationSummaryViewResultSchemas } from "./summarySchemas/nati
 import { nativeProcedureReferencesSummaryViewResultSchema } from "./summarySchemas/nativeProcedureReferencesSummarySchema.js";
 import { nativeValueTraceSummaryViewResultSchema } from "./summarySchemas/nativeValueTraceSummarySchema.js";
 import { nugetNupkgSummaryViewResultSchema } from "./summarySchemas/nugetNupkgSummarySchema.js";
+import { pythonWheelSummaryViewResultSchema } from "./summarySchemas/pythonWheelSummarySchema.js";
 import { objdumpSummaryViewResultSchema } from "./summarySchemas/objdumpSummarySchema.js";
 import { pcapCaptureSummaryViewResultSchema } from "./summarySchemas/pcapCaptureSummarySchema.js";
 import {
@@ -358,6 +359,7 @@ export {
   nativeProcedureReferencesSummaryViewResultSchema,
   nativeValueTraceSummaryViewResultSchema,
   nugetNupkgSummaryViewResultSchema,
+  pythonWheelSummaryViewResultSchema,
   objdumpSummaryViewResultSchema,
   pcapCaptureSummaryViewResultSchema,
   playwrightTracePageViewResultSchema,
@@ -387,6 +389,7 @@ const viewResultBase = {
   parent_operation: z.enum([
     "trace_web_source_location",
     "inspect_python_pyc",
+    "inspect_python_wheel",
     "inspect_nuget_nupkg",
     "inspect_erlang_beam",
     "inspect_devicetree",
@@ -782,6 +785,7 @@ export const analysisViewResultSchema = z.discriminatedUnion("kind", [
     batchDecompileSummaryViewResultSchema,
     webBundleSummaryViewResultSchema,
     nugetNupkgSummaryViewResultSchema,
+    pythonWheelSummaryViewResultSchema,
   ]),
   z.strictObject({
     ...viewResultBase,

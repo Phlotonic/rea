@@ -144,6 +144,7 @@ export const PROVIDER_CAPABILITY_CONFORMANCE: Readonly<
   peResources: { cases: ["tests/acceptance/applications/peResources.test.ts"] },
   nugetNupkg: { cases: ["tests/acceptance/nugetNupkgCli.test.ts"] },
   pythonPyc: { cases: ["tests/acceptance/pythonPycCli.test.ts"] },
+  pythonWheel: { cases: ["tests/acceptance/pythonWheelCli.test.ts"] },
   recordedCrash: { cases: ["tests/boundary/mcp/recordedCrashMcp.test.ts"] },
   releaseExposure: { cases: ["tests/acceptance/releaseExposureCli.test.ts"] },
   reverseEngineering: {

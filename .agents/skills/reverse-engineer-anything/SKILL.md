@@ -260,9 +260,11 @@ explicit path or endpoint and do not need it.
     containers into a separate file with an external codec, then inspect the
     result ([kernel modules](https://github.com/morluto/rea/blob/main/docs/kernel-modules.md),
     [kernel build config](https://github.com/morluto/rea/blob/main/docs/guides/native/kernel-build-config.md)).
-  - CPython `.pyc`: `inspect_python_pyc`; Erlang `.beam`:
-    `inspect_erlang_beam`; NuGet `.nupkg`: `inspect_nuget_nupkg`
+  - CPython `.pyc`: `inspect_python_pyc`; Python `.whl` wheel distribution:
+    `inspect_python_wheel`; Erlang `.beam`: `inspect_erlang_beam`; NuGet
+    `.nupkg`: `inspect_nuget_nupkg`
     ([pyc](https://github.com/morluto/rea/blob/main/docs/python-pyc.md),
+    [wheel](https://github.com/morluto/rea/blob/main/docs/python-wheel.md),
     [BEAM](https://github.com/morluto/rea/blob/main/docs/erlang-beam.md),
     [NuGet](https://github.com/morluto/rea/blob/main/docs/guides/managed/nuget-nupkg.md)).
   - SQLite snapshot: `inspect_sqlite_database`; read the schema first and

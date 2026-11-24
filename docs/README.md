@@ -126,6 +126,7 @@ The [REA website](https://rea.tools/) has worked examples and product pages.
 - [Model file declarations](model-artifacts.md)
 - [Python packaged applications](python-packaged-applications.md)
 - [CPython pyc inspection](python-pyc.md)
+- [Python wheel inspection](python-wheel.md)
 - [Erlang BEAM files](erlang-beam.md)
 - [Godot PCK archives](godot-pck.md)
 - [UnityFS AssetBundle archives](unityfs.md)

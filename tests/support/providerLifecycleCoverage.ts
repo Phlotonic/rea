@@ -1650,6 +1650,20 @@ export const PROVIDER_LIFECYCLE_COVERAGE: Readonly<
       ),
     ),
   ),
+  "rea-python-wheel": inProcess(
+    covered(
+      test(
+        "tests/acceptance/pythonWheelCli.test.ts",
+        "inspects Python wheel metadata, tags, entry points and RECORD integrity through CLI",
+      ),
+    ),
+    covered(
+      test(
+        "src/python/PythonWheelParser.test.ts",
+        "runs end-to-end through PythonWheelService and summary analysisView",
+      ),
+    ),
+  ),
   "rea-release-exposure": inProcess(
     covered(
       test(
