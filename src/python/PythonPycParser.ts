@@ -20,6 +20,7 @@ import { Budget } from "../domain/budget.js";
 import { BinaryReader } from "../domain/binaryContainer.js";
 import { PYTHON_PYC_FORMAT, pythonPycLimit } from "./PythonPyc.errors.js";
 import { pythonPycBytecodeIdentity } from "./PythonPycBytecodeEquality.js";
+import { disassemblePythonBytecode } from "./PythonPycDisassembler.js";
 import {
   asBytes,
   asString,
@@ -151,10 +152,15 @@ const fastLocalCount = (kinds: Buffer): number => {
 };
 
 /** Decode one bounded CPython 3.7–3.15 pyc without executing bytecode. */
+type PythonPycParseOptions = PythonPycLimits & {
+  readonly disassemble?: boolean | undefined;
+  readonly max_instructions?: number | undefined;
+};
+
 export const parsePythonPyc = (
   bytes: Buffer,
   artifact: { path: string; sha256: string; bytes: number },
-  input: PythonPycLimits,
+  input: PythonPycParseOptions,
   work: PythonPycWork = emptyPythonPycWork(),
 ): PythonPyc => {
   if (bytes.length !== artifact.bytes)
@@ -239,7 +245,9 @@ export const parsePythonPyc = (
       marshal_depth: reader.depthReached,
     },
     limitations: [
-      "Bytecode is retained as length and SHA-256 only; this workflow does not decompile, disassemble, or recover source.",
+      input.disassemble === true
+        ? "Bytecode instructions are statically decoded from the pinned opcode profile without executing code or recovering high-level Python source."
+        : "Bytecode is retained as length and SHA-256 only; this workflow does not decompile, disassemble, or recover source.",
       "The selected file is not executed and CPython is not invoked.",
       hashBased
         ? "source_hash_hex is the PEP 552 header field; the original .py is not read."
@@ -297,6 +305,8 @@ class PycMarshalReader extends MarshalReader<MarshalValue> {
   readonly #readingTuples = new WeakSet<MarshalValue>();
   /** Code objects whose const summaries wait until the graph is fully decoded. */
   readonly #codes: CodeNode[] = [];
+  /** Raw co_code buffers retained only when disassemble=true. */
+  readonly #rawBytecode = new WeakMap<CodeNode, Buffer>();
   /**
    * Nested code objects reached from one container. Pure wrappers store the
    * child's array; fresh arrays are counted so copies cannot grow without a
@@ -311,7 +321,7 @@ class PycMarshalReader extends MarshalReader<MarshalValue> {
     bytes: Buffer,
     readonly layout: PythonPycCodeLayout,
     readonly magic: number,
-    readonly input: PythonPycLimits,
+    readonly input: PythonPycParseOptions,
     readonly rejectNegativeCodeFields: boolean,
     /** Marshal slice constants exist from CPython 3.14a1 magic 3608. */
     readonly acceptSlices: boolean,
@@ -600,6 +610,7 @@ class PycMarshalReader extends MarshalReader<MarshalValue> {
       linetable: `${linetable.length}:${sha256(linetable, this.work)}`,
       exceptiontable: `${exceptiontable.length}:${sha256(exceptiontable, this.work)}`,
     });
+    if (this.input.disassemble === true) this.#rawBytecode.set(node, bytecode);
     this.#codes.push(node);
     return node;
   }
@@ -610,12 +621,29 @@ class PycMarshalReader extends MarshalReader<MarshalValue> {
    * that container before its items exist.
    */
   finishCodes(): void {
+    const maxInstructions = this.input.max_instructions ?? 4096;
     for (const node of this.#codes) {
       const material =
         this.#codeEquality.get(node) ??
         malformed("Code object is missing decoded constants.");
       node.consts = this.#summarizeConsts(material.consts);
       node.nested = this.#nestedCodeObjects(material.consts);
+      if (this.input.disassemble === true) {
+        const raw = this.#rawBytecode.get(node);
+        if (raw !== undefined) {
+          node.disassembly = disassemblePythonBytecode({
+            magic: this.magic,
+            bytecode: raw,
+            consts: node.consts,
+            names: node.names,
+            varnames: node.varnames,
+            freevars: node.freevars,
+            cellvars: node.cellvars,
+            localsplusnames: node.localsplusnames,
+            maxInstructions,
+          });
+        }
+      }
     }
   }
 

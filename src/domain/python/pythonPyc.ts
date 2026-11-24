@@ -137,6 +137,21 @@ export const inspectPythonPycInputSchema = pythonPycLimitsSchema.extend({
   path: absoluteLocalPathStringSchema.describe(
     "Absolute filesystem path to the selected CPython .pyc file",
   ),
+  disassemble: z
+    .boolean()
+    .optional()
+    .describe(
+      "Decode CPython bytecode instructions (opcodes, inline caches, jump targets, resolved operands) per code object without executing code (default false)",
+    ),
+  max_instructions: z
+    .number()
+    .int()
+    .min(1)
+    .max(65536)
+    .optional()
+    .describe(
+      "Maximum decoded bytecode instructions per code object when disassemble is true (default 4096)",
+    ),
 });
 
 export const PYTHON_PYC_CONST_PREVIEW_LIMIT = 80;
@@ -211,9 +226,31 @@ const pythonCodeFields = {
     sha256: digestSchema,
   }),
   consts: z.array(pythonConstSchema),
+  disassembly: z
+    .strictObject({
+      status: z.enum(["decoded", "truncated", "unsupported-magic"]),
+      opcode_profile: z.string().min(1).nullable(),
+      instruction_count: uint,
+      instructions: z.array(
+        z.strictObject({
+          offset: uint,
+          opcode: z.number().int().min(0).max(255),
+          opname: z.string().min(1),
+          arg: z.number().int().nonnegative().nullable(),
+          argrepr: z.string().nullable(),
+          jump_target: z.number().int().nonnegative().nullable(),
+          cache_entries: z.number().int().nonnegative(),
+        }),
+      ),
+    })
+    .optional(),
 };
 
 export type PythonPycConst = z.infer<typeof pythonConstSchema>;
+export type PythonPycDisassembly = NonNullable<
+  z.infer<typeof pythonCodeFields.disassembly>
+>;
+export type PythonPycInstruction = PythonPycDisassembly["instructions"][number];
 
 /**
  * One distinct marshal code object. `nested_code` holds indexes into the

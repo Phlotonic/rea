@@ -260,7 +260,8 @@ explicit path or endpoint and do not need it.
     containers into a separate file with an external codec, then inspect the
     result ([kernel modules](https://github.com/morluto/rea/blob/main/docs/kernel-modules.md),
     [kernel build config](https://github.com/morluto/rea/blob/main/docs/guides/native/kernel-build-config.md)).
-  - CPython `.pyc`: `inspect_python_pyc`; Erlang `.beam`:
+  - CPython `.pyc`: `inspect_python_pyc` (pass `disassemble: true` to decode
+    CPython 3.8–3.12 instructions, jump targets and operands); Erlang `.beam`:
     `inspect_erlang_beam`; NuGet `.nupkg`: `inspect_nuget_nupkg`
     ([pyc](https://github.com/morluto/rea/blob/main/docs/python-pyc.md),
     [BEAM](https://github.com/morluto/rea/blob/main/docs/erlang-beam.md),

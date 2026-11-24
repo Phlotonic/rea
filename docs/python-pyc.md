@@ -8,7 +8,15 @@ no Python installation, active binary target, Hopper, Ghidra, or IDA.
 
 ```bash
 rea inspect-python-pyc /absolute/path/to/module.pyc --json
+rea inspect-python-pyc /absolute/path/to/module.pyc --disassemble --json
 ```
+
+Pass `--disassemble` (`disassemble: true` over MCP, optional `max_instructions`
+default `4096`) to decode CPython 3.8–3.12 wordcode instructions per code object
+including `EXTENDED_ARG`, inline `CACHE` widths, jump targets, and resolved
+constants, names, locals, free/cell variables, comparisons, binary operators,
+and intrinsics without running Python. Unmapped pre-release magics report
+`disassembly.status: "unsupported-magic"`.
 
 The CLI resolves relative paths against the caller's working directory. MCP
 requires an absolute filesystem path and preserves that exact selection:
