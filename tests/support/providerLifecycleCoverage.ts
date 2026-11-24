@@ -1650,6 +1650,20 @@ export const PROVIDER_LIFECYCLE_COVERAGE: Readonly<
       ),
     ),
   ),
+  "rea-pytorch-pickle": inProcess(
+    covered(
+      test(
+        "tests/acceptance/pytorchPickleCli.test.ts",
+        "inspects Python pickle for unsafe globals through public CLI without execution",
+      ),
+    ),
+    covered(
+      test(
+        "src/python/PytorchPickleParser.test.ts",
+        "runs end-to-end on raw pickle through PytorchPickleService and summary view",
+      ),
+    ),
+  ),
   "rea-release-exposure": inProcess(
     covered(
       test(

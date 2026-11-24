@@ -379,7 +379,12 @@ export const ENTRY_FILES = Object.freeze(
         "PcapProvider.ts",
         "PcapProviderIdentity.ts",
       ],
-      python: ["PythonPycProvider.ts", "PythonPycProviderIdentity.ts"],
+      python: [
+        "PythonPycProvider.ts",
+        "PythonPycProviderIdentity.ts",
+        "PytorchPickleProvider.ts",
+        "PytorchPickleProviderIdentity.ts",
+      ],
       reference: [
         // The reference-source import workflow (src/application/ReferenceSource*)
         // runs the reader and consumes its result and failure types. It reports

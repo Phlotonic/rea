@@ -160,6 +160,11 @@ export const CLI_COMMAND_REGISTRATIONS = {
     (module, context) =>
       module.registerPythonPycCommands(context.cli, context.logger),
   ),
+  pytorchPickle: plain(
+    () => import("./pytorchPickleCommands.js"),
+    (module, context) =>
+      module.registerPytorchPickleCommands(context.cli, context.logger),
+  ),
   nugetNupkg: plain(
     () => import("./nugetNupkgCommands.js"),
     (module, context) =>
@@ -480,6 +485,7 @@ const CLI_FAMILY_REGISTRATIONS: {
     "gpu",
     "rust",
     "pythonPyc",
+    "pytorchPickle",
     "nugetNupkg",
     "erlang",
     "v8CodeCache",

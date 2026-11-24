@@ -124,6 +124,7 @@ The [REA website](https://rea.tools/) has worked examples and product pages.
 - [Maven POM and Gradle module metadata](maven-gradle-metadata.md)
 - [Release exposure](release-exposure.md)
 - [Model file declarations](model-artifacts.md)
+- [PyTorch checkpoints and Python pickles](pytorch-checkpoints.md)
 - [Python packaged applications](python-packaged-applications.md)
 - [CPython pyc inspection](python-pyc.md)
 - [Erlang BEAM files](erlang-beam.md)

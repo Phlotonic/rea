@@ -223,6 +223,11 @@ explicit path or endpoint and do not need it.
   - GGUF or safetensors declarations: `inspect_model_artifact`; do not infer
     model behavior from declared architecture or tensor types
     ([model file guide](https://github.com/morluto/rea/blob/main/docs/model-artifacts.md)).
+  - PyTorch checkpoints (`.pt`/`.pth`/`.ckpt`/`.bin` ZIP) or Python pickles
+    (`.pkl`/`.pickle`): `inspect_pytorch_checkpoint`; decodes pickle protocols
+    0–5 symbolically, audits unsafe globals, and maps `state_dict` tensor
+    storages without executing callables; absence of flagged globals does not
+    prove safety ([PyTorch checkpoint guide](https://github.com/morluto/rea/blob/main/docs/pytorch-checkpoints.md)).
   - Unity IL2CPP `global-metadata.dat`: `inspect_il2cpp_metadata`; pass the
     matching native binary as `binary_path` to link method addresses
     ([IL2CPP metadata guide](https://github.com/morluto/rea/blob/main/docs/il2cpp-metadata.md)).
